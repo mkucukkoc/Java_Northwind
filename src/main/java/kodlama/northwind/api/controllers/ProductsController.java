@@ -42,7 +42,7 @@ public class ProductsController {
 	}
 	
 	//post işleminde parametre olarak Product i almamızın sebebi request body oluşturmamız için 
-	//yani swagger da degerleri girmek için text ler oluştururuyor.
+	//yani swagger da degerleri girmek için text ler oluştururuyo.
 	@PostMapping("/add")
 	public Result add(@RequestBody Product product)
 	{
