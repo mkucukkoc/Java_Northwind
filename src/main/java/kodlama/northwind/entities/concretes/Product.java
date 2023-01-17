@@ -37,7 +37,7 @@ public class Product
 		
 	@ManyToOne()
 	@JoinColumn(name="category_id")
-	private Category categoryId;
+	private Category category;
 	
 	public Product()
 	{
@@ -54,7 +54,7 @@ public class Product
 		this.unitPrice = unitPrice;
 		this.unitsInStock = unitsInStock;
 		this.quantityPerUnit = quantityPerUnit;
-		this.categoryId = category;
+		this.category = category;
 	}
 
 	public int getId() {
@@ -97,11 +97,11 @@ public class Product
 		this.quantityPerUnit = quantityPerUnit;
 	}
 	public Category getCategory() {
-		return categoryId;
+		return category;
 	}
 
 	public void setCategory(Category category) {
-		this.categoryId = category;
+		this.category = category;
 	}
 		
 }

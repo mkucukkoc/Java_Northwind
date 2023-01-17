@@ -24,11 +24,11 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	//getByProductNameAndCategoryId için JPA bizim için arka planda şu sorguyu yazıyor->
 	//select * from product where=ProductName=abc and CategoryId=1
 	//diger getBy ile başlayan alanalar içinde aynı şekilde onlar içinde sorgu oluşturuyor.
-	Product getByProductNameAndCategoryId(String productName,int categoryId);
+	Product getByProductNameAndCategory_CategoryId(String productName,int categoryId);
 	
-	List<Product> getByProductNameOrCategoryId(String productName,int categoryId);
+	List<Product> getByProductNameOrCategory_CategoryId(String productName,int categoryId);
 	
-	List<Product> getByCategoryIn(List<Integer> categories);//select * from products where category_id in(1,2,3,4,5)
+	List<Product> getByCategory_CategoryIdIn(List<Integer> categories);//select * from products where category_id in(1,2,3,4,5)
 	
 	List<Product> getByProductNameContains(String productName);
 	
@@ -40,7 +40,18 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	//where productName=:productName =>burada ise where productName kısmı classımızdaki alan olan productName dir.
 	//=:productName => bu kısım ise sorgunun altındaki->List<Product> getByNameAndCategoryId(String productName,int categoryId);
 	//parametre olan String productName dir.
-	@Query("From Product where productName=:productName and categoryId=:categoryId")
+	@Query("From Product where productName=:productName and category.categoryId=:categoryId")
 	List<Product> getByNameAndCategoryId(String productName,int categoryId);
+	
+	
+	
+	//Önemli isimlendirme!!!!!
+	//bu interface de isimlendirme yaparken mesela-> List<Product> getByProductNameContains(String productName); bunu yazdın
+	//burada getByProductNameContains ->yazarsan bu şu anlama Product classında productname alanı var demektir.
+	//eger böyle bir alan yoksa bu interface de yazdıgın boş metotlar başka class da çalişmaz ve hata verir.
+	
+	
+	
+	
 	
 }

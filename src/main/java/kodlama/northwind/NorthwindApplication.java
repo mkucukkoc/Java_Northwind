@@ -23,7 +23,7 @@ public class NorthwindApplication {
 	        return new Docket(DocumentationType.SWAGGER_2)  
 	          .select()                                  
 	          .apis(RequestHandlerSelectors.basePackage("kodlama.northwind"))                                       
-	          .build();                                           
+	          .build();                                          
 	    }
 	 
 	 //.apis(RequestHandlerSelectors.basePackage("kodlama.northwind"))->bu satır şu demek
