@@ -13,6 +13,7 @@ import kodlama.northwind.core.utilities.results.SuccessResult;
 import kodlama.northwind.core.utilities.results.SuccessDataResult;
 import kodlama.northwind.dataAccess.abstracts.ProductDao;
 import kodlama.northwind.entities.concretes.Product;
+import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
 
 @Service
 public class ProductManager implements ProductService {
@@ -32,14 +33,12 @@ public class ProductManager implements ProductService {
 
 	@Override
 	public DataResult<List<Product>> getAll() {
-		// TODO Auto-generated method stub
 		return  new SuccessDataResult<List<Product>>
 		(this._productDao.findAll(),"Data Listelendi");//bu satır ile tüm productları alıyoruz.
 	}
 
 	@Override
 	public Result add(Product product) {
-		// TODO Auto-generated method stub
 		this._productDao.save(product);
 		return new SuccessResult("Ürün EKlendi");
 		
@@ -52,7 +51,7 @@ public class ProductManager implements ProductService {
 	}
 
 	@Override
-	public DataResult<Product> getByProductNameAndCategory(String productName, int categoryId) {
+	public DataResult<Product> getByProductNameAndCategoryId(String productName, int categoryId) {
 		return  new SuccessDataResult<Product>
 		(this._productDao.getByProductNameAndCategory_CategoryId(productName,categoryId),"Data Listelendi");
 	}
@@ -64,7 +63,7 @@ public class ProductManager implements ProductService {
 	}
 
 	@Override
-	public DataResult<List<Product>> getByCategoryIn(List<Integer> categories) {
+	public DataResult<List<Product>> getByCategory_CategoryIn(List<Integer> categories) {
 		return  new SuccessDataResult<List<Product>>
 		(this._productDao.getByCategory_CategoryIdIn(categories),"Data Listelendi");
 	}
@@ -98,6 +97,32 @@ public class ProductManager implements ProductService {
 		Sort sort= Sort.by(Sort.Direction.ASC,"productName");
 		return new SuccessDataResult<List<Product>>
 		(this._productDao.findAll(sort),"Basarili");
+	}
+
+	@Override
+	public DataResult<List<ProductWithCategoryDto>> getproductWithCategoryDetails() {
+	     
+		return  new SuccessDataResult<List<ProductWithCategoryDto>>
+		(this._productDao.getproductWithCategoryDetails(),"Data Listelendi");
+
+	}
+
+	@Override
+	public DataResult<Product> getById(int id) {
+		return  new SuccessDataResult<Product>
+		(this._productDao.getByid(id),"Data Listelendi");
+	}
+
+	@Override
+	public Result remove(int id) {
+		this._productDao.deleteById(id);
+		return new SuccessResult("Ürün Silindi");
+	}
+
+	@Override
+	public DataResult<List<Product>> getAllProduct() {
+		return  new SuccessDataResult<List<Product>>
+		(this._productDao.getAllProduct(),"Data Listelendi");//bu satır ile tüm productları alıyoruz.
 	}
 	
 	

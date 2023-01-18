@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import kodlama.northwind.entities.concretes.Product;
+import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
 
 //fn+f3 =go to definition mac için 
 public interface ProductDao extends JpaRepository<Product,Integer>
@@ -21,13 +22,14 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	//yani JPA Kullanmak istiyorsak bu isimlendirme standartında uymamız lazım.
 	Product getByProductName(String prodcutName);
 	
+	Product getByid(int id);
 	//getByProductNameAndCategoryId için JPA bizim için arka planda şu sorguyu yazıyor->
 	//select * from product where=ProductName=abc and CategoryId=1
 	//diger getBy ile başlayan alanalar içinde aynı şekilde onlar içinde sorgu oluşturuyor.
 	Product getByProductNameAndCategory_CategoryId(String productName,int categoryId);
 	
 	List<Product> getByProductNameOrCategory_CategoryId(String productName,int categoryId);
-	
+
 	List<Product> getByCategory_CategoryIdIn(List<Integer> categories);//select * from products where category_id in(1,2,3,4,5)
 	
 	List<Product> getByProductNameContains(String productName);
@@ -42,13 +44,21 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	//parametre olan String productName dir.
 	@Query("From Product where productName=:productName and category.categoryId=:categoryId")
 	List<Product> getByNameAndCategoryId(String productName,int categoryId);
-	
-	
-	
 	//Önemli isimlendirme!!!!!
 	//bu interface de isimlendirme yaparken mesela-> List<Product> getByProductNameContains(String productName); bunu yazdın
 	//burada getByProductNameContains ->yazarsan bu şu anlama Product classında productname alanı var demektir.
 	//eger böyle bir alan yoksa bu interface de yazdıgın boş metotlar başka class da çalişmaz ve hata verir.
+	
+	//aşagıdaki query de ProductWithCategoryDto classında yer alan alanları getirmek için qery yazıyoruz.
+	//qery de burada ->ProductWithCategoryDto(p.id,p.protuctName,c.categoryName) p->Product ,c->Categroy sınıflarının alanlarını veriyoruz.
+	//Inner Join kullanarak alanları birleştirme yapıyoruz..
+	@Query("Select new kodlama.northwind.entities.dtos.ProductWithCategoryDto(p.id,p.productName,c.categoryName) From Category c Inner Join c.products p")
+	List<ProductWithCategoryDto> getproductWithCategoryDetails();
+	
+	
+	@Query("From Product")
+	List<Product> getAllProduct();
+	
 	
 	
 	

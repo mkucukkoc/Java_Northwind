@@ -3,6 +3,7 @@ package kodlama.northwind.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 import kodlama.northwind.businness.abstracts.ProductService;
 import kodlama.northwind.core.utilities.results.DataResult;
 import kodlama.northwind.core.utilities.results.Result;
+import kodlama.northwind.core.utilities.results.SuccessResult;
 import kodlama.northwind.entities.concretes.Product;
+import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
 
 @RestController
 @RequestMapping("/api/products")
@@ -41,12 +44,33 @@ public class ProductsController {
 		return this.productService.getAll();//burada çalışan getall metodu ProductManaager in getall i çalışıyor.
 		
 	}
+	@GetMapping("/getallProduct")
+	public DataResult<List<Product>> getAllProduct()
+	{
+		return this.productService.getAllProduct();//burada çalışan getall metodu ProductManaager in getall i çalışıyor.
+		
+	}
+	
+	@GetMapping("/getById")
+	public DataResult<Product> getById(int id)
+	{
+		return this.productService.getById(id);
+		
+	}
+	
+	@DeleteMapping("{id}")
+	public Result remove(int id)
+	{
+		return this.productService.remove(id);
+		
+	}
 	
 	//post işleminde parametre olarak Product i almamızın sebebi request body oluşturmamız için 
 	//yani swagger da degerleri girmek için text ler oluştururuyo.
 	@PostMapping("/add")
 	public Result add(@RequestBody Product product)
 	{
+		
 		return this.productService.add(product);
 		
 	}
@@ -63,7 +87,7 @@ public class ProductsController {
 	public DataResult<Product> getByProductNameAndCategory(@RequestParam("productName") String productName,@RequestParam("categoryId") int categoryId)
 	{
 		
-		return this.productService.getByProductNameAndCategory(productName,categoryId);
+		return this.productService.getByProductNameAndCategoryId(productName,categoryId);
 		
 	}
 	
@@ -79,7 +103,7 @@ public class ProductsController {
 	public DataResult<List<Product>> getByCategoryIn(@RequestParam List<Integer> categories)
 	{
 		
-		return this.productService.getByCategoryIn(categories);
+		return this.productService.getByCategory_CategoryIn(categories);
 		
 	}
 	
@@ -105,18 +129,20 @@ public class ProductsController {
 		return this.productService.getAll(pageNo,pageSize);
 
 	}
+	
 	@GetMapping("/getAllAsc")
 	public DataResult<List<Product>> getAllSorted()
 	{
 		return this.productService.getAllSorted();
 
 	}
-
 	
+	@GetMapping("/getProductWithCategoryDetails")
+	public DataResult<List<ProductWithCategoryDto>> getProductWithCategoryDetails() {
 	
-	
-	
-	
-	
+		return this.productService.getproductWithCategoryDetails();
+	}
 	
 }
+	
+	
