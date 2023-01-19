@@ -15,8 +15,8 @@ public class Product
 	@Column(name="product_id")
 	private int id;
 	
-	//@Column(name="category_id")
-	//private int categoryId;
+	@Column(name="category_id")
+	private int categoryId;
 	
 	@Column(name="product_name")
 	private String productName;
@@ -36,7 +36,6 @@ public class Product
 	//ve categoryId alanını @JoinColumn ile product classının içine ekliyoruz.
 
 	@ManyToOne()
-	@JoinColumn(name="category_id")
 	private Category category;
 
 
@@ -54,7 +53,31 @@ public class Product
 	{
 		
 	}
-	
+	public int getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(int categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public Product(int id, String productName, double unitPrice, short unitsInStock, String quantityPerUnit) {
+		super();
+		this.id = id;
+		this.productName = productName;
+		this.unitPrice = unitPrice;
+		this.unitsInStock = unitsInStock;
+		this.quantityPerUnit = quantityPerUnit;
+	}
+	public Product(int id, String productName, double unitPrice, short unitsInStock, String quantityPerUnit,int categoryId) {
+		super();
+		this.id = id;
+		this.productName = productName;
+		this.unitPrice = unitPrice;
+		this.unitsInStock = unitsInStock;
+		this.quantityPerUnit = quantityPerUnit;
+		this.categoryId = categoryId;
+	}
 	public Product(int id, String productName, double unitPrice, short unitsInStock, String quantityPerUnit,Category category) {
 		super();
 		this.id = id;
@@ -100,7 +123,7 @@ public class Product
 
 
 
-	public short getUnitsInStock() {
+	public double getUnitsInStock() {
 		return unitsInStock;
 	}
 

@@ -26,10 +26,11 @@ import kodlama.northwind.core.utilities.results.Result;
 import org.springframework.http.HttpStatus;
  
 
-@RestController
-@RequestMapping(value="/api/users")
+//@RestController
+//@RequestMapping(value="/api/users")
 public class UsersController
 {
+	/*
 	private UserService _userService;
 
 	@Autowired
@@ -74,24 +75,6 @@ public class UsersController
 		ErrorDataResult<Object> errors=new ErrorDataResult<Object>(validationErrors,"Dogrulama Hatalari");
 	
 		return errors;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}*/
 	
 }

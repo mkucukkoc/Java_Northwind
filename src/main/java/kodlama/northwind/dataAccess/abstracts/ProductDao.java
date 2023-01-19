@@ -2,10 +2,16 @@ package kodlama.northwind.dataAccess.abstracts;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import kodlama.northwind.entities.concretes.Category;
 import kodlama.northwind.entities.concretes.Product;
+import kodlama.northwind.entities.dtos.ProductDto;
 import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
 
 //fn+f3 =go to definition mac için 
@@ -22,7 +28,7 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	//yani JPA Kullanmak istiyorsak bu isimlendirme standartında uymamız lazım.
 	Product getByProductName(String prodcutName);
 	
-	Product getByid(int id);
+	ProductDto getByid(int id);
 	//getByProductNameAndCategoryId için JPA bizim için arka planda şu sorguyu yazıyor->
 	//select * from product where=ProductName=abc and CategoryId=1
 	//diger getBy ile başlayan alanalar içinde aynı şekilde onlar içinde sorgu oluşturuyor.
@@ -55,11 +61,11 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	@Query("Select new kodlama.northwind.entities.dtos.ProductWithCategoryDto(p.id,p.productName,c.categoryName) From Category c Inner Join c.products p")
 	List<ProductWithCategoryDto> getproductWithCategoryDetails();
 	
+	@Query("Select new kodlama.northwind.entities.dtos.ProductDto(p.id,p.productName,p.quantityPerUnit,p.unitPrice,p.unitsInStock,p.categoryId) From Product p")
+	List<ProductDto> getAllProduct();
 	
-	@Query("From Product")
-	List<Product> getAllProduct();
-	
-	
+
+
 	
 	
 	

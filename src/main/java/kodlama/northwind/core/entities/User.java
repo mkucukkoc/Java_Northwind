@@ -16,63 +16,67 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 @Entity
-@Table(name="users")
+@Table(	name = "users", 
+		uniqueConstraints = { 
+			@UniqueConstraint(columnNames = "username"),
+			@UniqueConstraint(columnNames = "email") 
+		})
 public class User {
 	
-	//@NotBlank o alanın boş geçilmemesini önlemek için kullanılır.
-	//@NotNull ->boş geçilmesini önlemek için kullanılır.
-	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
-	private int id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	@Column(name="email")
+	@NotBlank
+	@Size(max = 20)
+	private String username;
+
+	@NotBlank
+	@Size(max = 50)
 	@Email
-	@NotBlank
-	@NotNull
 	private String email;
-	
-	@Column(name="password")
+
 	@NotBlank
-	@NotNull
+	@Size(max = 120)
 	private String password;
-	
-	@ManyToMany(fetch=FetchType.EAGER,cascade=CascadeType.ALL)
-	@JoinTable(name="user_role",
-			joinColumns= {
-					@JoinColumn(name="user_id")
-			},
-			inverseJoinColumns= {
-					@JoinColumn(name="role_id")
-					
-			}
-			)
-	
-	private Set<Role> role;
-	
-	
-	
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(	name = "user_roles", 
+				joinColumns = @JoinColumn(name = "user_id"), 
+				inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+
 	public User() {
-		
 	}
-	
-	
-	public User(int id, @Email @NotBlank @NotNull String email, @NotBlank @NotNull String password) {
-		super();
-		this.id = id;
+
+	public User(String username, String email, String password) {
+		this.username = username;
 		this.email = email;
 		this.password = password;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getEmail() {
@@ -90,4 +94,14 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+	
+	
 }

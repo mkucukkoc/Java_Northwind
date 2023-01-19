@@ -5,5 +5,5 @@ import kodlama.northwind.core.utilities.results.Result;
 
 public interface RoleService {
 
-	Result add(Role role);
+	//Result add(Role role);
 }

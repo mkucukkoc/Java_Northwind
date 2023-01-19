@@ -3,20 +3,17 @@ package kodlama.northwind.api.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import kodlama.northwind.businness.abstracts.ProductService;
 import kodlama.northwind.core.utilities.results.DataResult;
 import kodlama.northwind.core.utilities.results.Result;
-import kodlama.northwind.core.utilities.results.SuccessResult;
-import kodlama.northwind.entities.concretes.Product;
-import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
+import kodlama.northwind.entities.dtos.ProductDto;
 
 @RestController
 @RequestMapping("/api/products")
@@ -26,6 +23,8 @@ public class ProductsController {
 	//@GetMapping("/getall") getMapping ile api/prpducts/getall getall isteginin adını veriyor.
 	
 	private ProductService productService;
+	
+	
 	
 	//@Autowired ProductService interface i kim implements ettiyse onu new ler yani
 	//ProductManager otomatik olarak newleyecektir.
@@ -39,20 +38,21 @@ public class ProductsController {
 	}
 
 	@GetMapping("/getall")
-	public DataResult<List<Product>> getAll()
+	public DataResult<List<ProductDto>> getAll()
 	{
 		return this.productService.getAll();//burada çalışan getall metodu ProductManaager in getall i çalışıyor.
 		
 	}
+	/*
 	@GetMapping("/getallProduct")
-	public DataResult<List<Product>> getAllProduct()
+	public DataResult<List<ProductDto>> getAllProduct()
 	{
 		return this.productService.getAllProduct();//burada çalışan getall metodu ProductManaager in getall i çalışıyor.
 		
-	}
+	}*/
 	
 	@GetMapping("/getById")
-	public DataResult<Product> getById(int id)
+	public DataResult<ProductDto> getById(int id)
 	{
 		return this.productService.getById(id);
 		
@@ -65,16 +65,24 @@ public class ProductsController {
 		
 	}
 	
-	//post işleminde parametre olarak Product i almamızın sebebi request body oluşturmamız için 
-	//yani swagger da degerleri girmek için text ler oluştururuyo.
 	@PostMapping("/add")
-	public Result add(@RequestBody Product product)
+	public Result add(@RequestBody ProductDto productDto)
 	{
 		
-		return this.productService.add(product);
+		return this.productService.add(productDto);
 		
 	}
 	
+	//post işleminde parametre olarak Product i almamızın sebebi request body oluşturmamız için 
+	//yani swagger da degerleri girmek için text ler oluştururuyo.
+	
+	@PostMapping("/guncelle")
+	public ResponseEntity<Result> guncelle(int id,@RequestBody ProductDto productDto)
+	{
+		return ResponseEntity.ok(productService.updateProduct(id,productDto));
+		
+	}
+	/*
 	@GetMapping("/getByProductName")
 	public DataResult<Product> getByProductName(@RequestParam String productName)
 	{
@@ -142,6 +150,7 @@ public class ProductsController {
 	
 		return this.productService.getproductWithCategoryDetails();
 	}
+	*/
 	
 }
 	

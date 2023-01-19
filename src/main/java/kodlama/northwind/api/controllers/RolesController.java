@@ -10,10 +10,11 @@ import kodlama.northwind.core.entities.Role;
 import kodlama.northwind.core.utilities.results.Result;
 import kodlama.northwind.core.utilities.results.SuccessResult;
 
-@RestController
-@RequestMapping("/api/roles")
+//@RestController
+//@RequestMapping("/api/roles")
 public class RolesController {
 
+	/*
 	private RoleService _roleService;
 
 	@Autowired
@@ -30,6 +31,6 @@ public class RolesController {
 		return this._roleService.add(role);
 
 		
-	}
+	}*/
 	
 }

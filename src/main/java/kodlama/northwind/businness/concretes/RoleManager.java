@@ -8,10 +8,10 @@ import kodlama.northwind.core.entities.Role;
 import kodlama.northwind.core.utilities.results.Result;
 import kodlama.northwind.core.utilities.results.SuccessResult;
 
-@Service
-public class RoleManager implements RoleService{
+//@Service
+public class RoleManager{ //implements RoleService{
 
-
+/*
 	private RoleDao _roleDao;
 	
 	@Autowired
@@ -25,5 +25,5 @@ public class RoleManager implements RoleService{
 		this._roleDao.save(role);
 		return new SuccessResult("Role Eklendi");
 	}
-
+*/
 }

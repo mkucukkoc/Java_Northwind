@@ -6,19 +6,20 @@ import java.util.List;
 import kodlama.northwind.core.utilities.results.DataResult;
 import kodlama.northwind.core.utilities.results.Result;
 import kodlama.northwind.entities.concretes.Product;
+import kodlama.northwind.entities.dtos.ProductDto;
 import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
 
 public interface ProductService {
 	
-	DataResult<List<Product>> getAll();
+	DataResult<List<ProductDto>> getAll();
 	
-	DataResult<List<Product>> getAllProduct();
+	DataResult<List<ProductDto>> getAllProduct();
 	
 	DataResult<List<Product>> getAll(int pageNo,int pageSize);
 	
 	DataResult<List<Product>> getAllSorted();
 	
-	Result add(Product product);
+	Result add(ProductDto productDto);
 	
 	Result remove(int id);
 	
@@ -36,6 +37,9 @@ public interface ProductService {
 	
 	DataResult<List<ProductWithCategoryDto>> getproductWithCategoryDetails();
 	
-	DataResult<Product> getById(int id);
+	DataResult<ProductDto> getById(int id);
+	
+	Result updateProduct(int id,ProductDto productDto);
+
 
 }

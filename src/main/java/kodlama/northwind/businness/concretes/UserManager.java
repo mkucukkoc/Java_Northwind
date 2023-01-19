@@ -11,9 +11,9 @@ import kodlama.northwind.core.utilities.results.Result;
 import kodlama.northwind.core.utilities.results.SuccessDataResult;
 import kodlama.northwind.core.utilities.results.SuccessResult;
 
-@Service
-public class UserManager implements UserService{
-
+//@Service
+public class UserManager {//implements UserService{
+/*
 	private UserDao _userDao;
 	
 	@Autowired
@@ -38,6 +38,6 @@ public class UserManager implements UserService{
 	{
 		
 	
-	}
+	}*/
 
 }

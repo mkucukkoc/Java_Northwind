@@ -6,9 +6,9 @@ import kodlama.northwind.core.utilities.results.Result;
 
 public interface UserService {
 	
-	DataResult<User> getByEmail(String email);
+	//DataResult<User> getByEmail(String email);
 	
-	Result add(User user);
+	//Result add(User user);
 	
 	
 }

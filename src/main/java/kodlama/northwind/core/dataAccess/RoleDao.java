@@ -1,9 +1,15 @@
 package kodlama.northwind.core.dataAccess;
 
-import org.springframework.data.repository.CrudRepository;
+import java.util.Optional;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import kodlama.northwind.core.entities.ERole;
 import kodlama.northwind.core.entities.Role;
 
-public interface RoleDao extends CrudRepository<Role,String> {
+@Repository
+public interface RoleDao extends JpaRepository<Role, Long> {
+	
+	  Optional<Role> findByName(ERole name);
 
 }

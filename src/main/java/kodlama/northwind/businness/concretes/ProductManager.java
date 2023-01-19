@@ -1,7 +1,9 @@
 package kodlama.northwind.businness.concretes;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
+import java.util.Optional;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,6 +15,7 @@ import kodlama.northwind.core.utilities.results.SuccessResult;
 import kodlama.northwind.core.utilities.results.SuccessDataResult;
 import kodlama.northwind.dataAccess.abstracts.ProductDao;
 import kodlama.northwind.entities.concretes.Product;
+import kodlama.northwind.entities.dtos.ProductDto;
 import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
 
 @Service
@@ -21,6 +24,8 @@ public class ProductManager implements ProductService {
 
 	//ProductDao dataaccess layer da ki interface dir.
 	//veritabanı ulaşmak için bu interface kullanıyoruz.
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	
 	private ProductDao _productDao;
@@ -31,16 +36,22 @@ public class ProductManager implements ProductService {
 		this._productDao = _productDao;
 	}
 
-	@Override
-	public DataResult<List<Product>> getAll() {
-		return  new SuccessDataResult<List<Product>>
-		(this._productDao.findAll(),"Data Listelendi");//bu satır ile tüm productları alıyoruz.
-	}
+	
 
 	@Override
-	public Result add(Product product) {
-		this._productDao.save(product);
-		return new SuccessResult("Ürün EKlendi");
+	public DataResult<List<ProductDto>> getAll() {
+		List<Product>products=_productDao.findAll();
+		List<ProductDto>dtos=products.stream().map(product->modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+		return  new SuccessDataResult<List<ProductDto>>(dtos,
+		"Data Listelendi");//bu satır ile tüm productları alıyoruz.
+	}
+	
+	@Override
+	public Result add(ProductDto productDto) {
+		
+		Product products=modelMapper.map(productDto, Product.class);
+		modelMapper.map(_productDao.save(products), ProductDto.class);
+		return new SuccessResult("Ürün Eklendi");
 		
 	}
 
@@ -107,10 +118,14 @@ public class ProductManager implements ProductService {
 
 	}
 
-	@Override
-	public DataResult<Product> getById(int id) {
-		return  new SuccessDataResult<Product>
-		(this._productDao.getByid(id),"Data Listelendi");
+	
+	
+	public DataResult<ProductDto> getById(int id) {
+		
+		Optional<Product> productDto = _productDao.findById(id); 
+		
+		return new SuccessDataResult<ProductDto>(modelMapper.map(productDto.get(),ProductDto.class,("Data Listelendi")));
+		
 	}
 
 	@Override
@@ -120,9 +135,33 @@ public class ProductManager implements ProductService {
 	}
 
 	@Override
-	public DataResult<List<Product>> getAllProduct() {
-		return  new SuccessDataResult<List<Product>>
+	public DataResult<List<ProductDto>> getAllProduct() {
+		return  new SuccessDataResult<List<ProductDto>>
 		(this._productDao.getAllProduct(),"Data Listelendi");//bu satır ile tüm productları alıyoruz.
+	}
+
+
+
+	@Override
+	public Result updateProduct(int id, ProductDto productDto) {
+		//Optional Clas sayesinde;
+		//Null kontrolü yapılmasına gerek kalmaz.
+		//Kolay kod yazımı.
+		//Kod okunabilirliğinin kolaylaşması.
+		Optional<Product> getId = _productDao.findById(id); 
+		//isPresent : Bu method Optional türde olan bir nesnenin tanımlı olup olmadığını kontrol etmemizi sağlar.
+		//Eğer tanımlı ise true değil ise false değeri döner.
+		if(getId.isPresent())
+		{
+			getId.get().setProductName(productDto.getProductName());
+			getId.get().setQuantityPerUnit(productDto.getQuantityPerUnit());
+			getId.get().setUnitPrice(productDto.getUnitPrice());
+			getId.get().setUnitsInStock(productDto.getUnitsInStock());
+			getId.get().setCategoryId(productDto.getCategoryId());	
+		}
+		modelMapper.map(_productDao.save(getId.get()), ProductDto.class);
+		return new SuccessResult("Ürün Güncellendi");
+
 	}
 	
 	
