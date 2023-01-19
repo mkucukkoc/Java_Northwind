@@ -1,4 +1,4 @@
-package kodlama.northwind.core.security;
+package kodlama.northwind.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,9 +16,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
-import kodlama.northwind.businness.concretes.AuthEntryPointJwt;
-import kodlama.northwind.businness.concretes.AuthTokenFilter;
 import kodlama.northwind.businness.concretes.UserDetailsServiceImpl;
+import kodlama.northwind.security.jwt.AuthEntryPointJwt;
+import kodlama.northwind.security.jwt.AuthTokenFilter;
 
 
 
@@ -47,6 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 		return super.authenticationManagerBean();
+	
 	}
 	
 

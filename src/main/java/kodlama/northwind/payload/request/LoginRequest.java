@@ -1,4 +1,4 @@
-package kodlama.northwind.core.entities;
+package kodlama.northwind.payload.request;
 
 import javax.validation.constraints.NotBlank;
 

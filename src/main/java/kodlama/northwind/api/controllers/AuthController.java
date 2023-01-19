@@ -24,17 +24,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import kodlama.northwind.businness.concretes.JwtUtils;
 import kodlama.northwind.businness.concretes.UserDetailsImpl;
 import kodlama.northwind.core.dataAccess.RoleDao;
 import kodlama.northwind.core.dataAccess.UserDao;
 import kodlama.northwind.core.entities.ERole;
-import kodlama.northwind.core.entities.JwtResponse;
-import kodlama.northwind.core.entities.LoginRequest;
-import kodlama.northwind.core.entities.MessageResponse;
 import kodlama.northwind.core.entities.Role;
-import kodlama.northwind.core.entities.SignupRequest;
 import kodlama.northwind.core.entities.User;
+import kodlama.northwind.payload.request.LoginRequest;
+import kodlama.northwind.payload.request.SignupRequest;
+import kodlama.northwind.payload.response.JwtResponse;
+import kodlama.northwind.payload.response.MessageResponse;
+import kodlama.northwind.security.jwt.JwtUtils;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

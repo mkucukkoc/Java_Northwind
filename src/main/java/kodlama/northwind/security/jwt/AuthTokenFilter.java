@@ -1,4 +1,4 @@
-package kodlama.northwind.businness.concretes;
+package kodlama.northwind.security.jwt;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import kodlama.northwind.businness.concretes.UserDetailsServiceImpl;
 
 public class AuthTokenFilter extends OncePerRequestFilter {
 

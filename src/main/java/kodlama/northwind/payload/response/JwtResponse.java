@@ -1,4 +1,4 @@
-package kodlama.northwind.core.entities;
+package kodlama.northwind.payload.response;
 
 import java.util.*;
 public class JwtResponse {

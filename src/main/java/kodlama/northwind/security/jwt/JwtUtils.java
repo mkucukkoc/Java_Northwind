@@ -1,4 +1,4 @@
-package kodlama.northwind.businness.concretes;
+package kodlama.northwind.security.jwt;
 
 import java.util.Date;
 
@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
+import kodlama.northwind.businness.concretes.UserDetailsImpl;
 
 @Component
 public class JwtUtils 
