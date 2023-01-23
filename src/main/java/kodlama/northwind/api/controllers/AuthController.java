@@ -42,6 +42,7 @@ import kodlama.northwind.security.jwt.JwtUtils;
 public class AuthController {
 	
 	
+	
 	    @Autowired
 		 AuthenticationManager authenticationManager;
 
@@ -60,9 +61,9 @@ public class AuthController {
 		
 	
 
-		@PostMapping("/signin")
+		@PostMapping("/login")
 		public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
+            //Authentication ile authenticate oluyoruz ve loginRequest parametreleini veriyoruz.
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -77,7 +78,7 @@ public class AuthController {
 			return ResponseEntity.ok(new JwtResponse(jwt));
 		}
 
-		@PostMapping("/signup")
+		@PostMapping("/register")
 		public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
 			if (userRepository.existsByUsername(signUpRequest.getUsername())) {
 				return ResponseEntity

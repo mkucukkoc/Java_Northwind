@@ -1,4 +1,4 @@
-package kodlama.northwind.security;
+package kodlama.northwind.security.configs;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;

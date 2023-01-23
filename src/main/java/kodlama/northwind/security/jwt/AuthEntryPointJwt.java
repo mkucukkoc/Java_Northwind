@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 	
+	//AuthEntryPointJwt class ile authantice olmadan önce verilen hataları kontrol etmemizi sağlıyor 
+	//errorları dönüyoruz
 	private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);
 
 	  @Override
@@ -40,7 +42,7 @@ public class AuthEntryPointJwt implements AuthenticationEntryPoint {
 	    final ObjectMapper mapper = new ObjectMapper();
 	    mapper.writeValue(response.getOutputStream(), body);
 
-//	    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
+       response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
 	  }
 	  
 	  

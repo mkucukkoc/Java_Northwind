@@ -15,12 +15,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	  @Autowired
 	  UserDao userRepository;
 
+	  //UserDetailsServiceImpl bu sınıfa UserDetailsService interface implement ediyoruz.
+	  //ve bu interface implement etmek için loadUserByUsername metotunun kullanmak zorundayız.
+	  //veritabanında username almak için bunları yapıyoruz.findByUsername username bakıyor var mı yok mu diye varsa 
+	  //UserDetailsImpl.build(user)->UserDetailsImpl sınıfını build ediyor.
+	  //ve kontrol ediyoruz eger username bulunamazsa hata fırlatacak.
+	  //ve bu UserDetailsServiceImpl classını jwt token ürettiğimiz JwtUtils sınıfında kullnanacağız.
 	  @Override
 	  @Transactional
 	  public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	    User user = userRepository.findByUsername(username)
 	        .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
-
 	    return UserDetailsImpl.build(user);
 	  }
 }
