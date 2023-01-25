@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,17 @@ import kodlama.northwind.entities.concretes.Product;
 
 
 @Service
+@CacheConfig(cacheNames = "categoryCache")
 public class CategoryManager implements CategoryService {
 private  CategoryDao _categoryDao;
 	
+	//Cache Kullanımı Özelikleri
+	//@EnableCaching - Spring Boot Uygulamasında Önbelleğe Almayı Etkinleştir
+	//@Cacheable - Select sorgularıyla önbelleğe alın. @GetMapping kullanarak.
+	//@CachePut - Cache güncelle. @PutMapping kullanraak.
+	//@CacheEvict - Cache temizle. @DeleteMapping kullanarak.
+
+
 	@Autowired
 	public CategoryManager(CategoryDao categoryDao) {
 		super();
@@ -32,13 +41,14 @@ private  CategoryDao _categoryDao;
 
 	//@Qualifier("redisTemplate")
 	@Override
-    @Cacheable(value="Category")
+	@Cacheable(cacheNames = "categories")
 	public DataResult<List<Category>> getAll() {
 		return  new SuccessDataResult<List<Category>>
 		(this._categoryDao.findAll(),"Data Listelendi");
 	}
 
 	@Override
+	@CacheEvict(cacheNames = "categories", allEntries = true)
 	public Result add(Category category) {
 		this._categoryDao.save(category);
 		return new SuccessResult("Kategori EKlendi");
@@ -46,7 +56,7 @@ private  CategoryDao _categoryDao;
 	}
 
 	@Override
-    @Cacheable(value="Category", key="#id")
+	@Cacheable(cacheNames = "category", key = "#id", unless = "#result == null")
 	public DataResult<Category> getById(int id) throws InterruptedException {
 		//Thread.sleep(5000L);
 		
@@ -55,13 +65,14 @@ private  CategoryDao _categoryDao;
 	}
 
 	 @Override
-	 @CacheEvict(value="Invoice", key="#id")
+	 @Caching(evict = { @CacheEvict(cacheNames = "category", key = "#id"),
+				@CacheEvict(cacheNames = "categories", allEntries = true) })
 	public Result remove(int id) {
 		this._categoryDao.deleteById(id);
 		return new SuccessResult("Ürün Silindi");
 		
 	}
-	
+	//Cache çalışıp çalışmadıgını deneme metotları 
 	@Cacheable(cacheNames="mycache")
 	public String longRunninMethod() throws InterruptedException
 	{
