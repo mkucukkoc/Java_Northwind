@@ -24,12 +24,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import kodlama.northwind.businness.concretes.UserDetailsImpl;
 import kodlama.northwind.core.dataAccess.RoleDao;
 import kodlama.northwind.core.dataAccess.UserDao;
 import kodlama.northwind.core.entities.ERole;
 import kodlama.northwind.core.entities.Role;
 import kodlama.northwind.core.entities.User;
+import kodlama.northwind.core.entities.UserDetailsImpl;
 import kodlama.northwind.payload.request.LoginRequest;
 import kodlama.northwind.payload.request.SignupRequest;
 import kodlama.northwind.payload.response.JwtResponse;
@@ -63,7 +63,8 @@ public class AuthController {
 
 		@PostMapping("/login")
 		public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-            //Authentication ile authenticate oluyoruz ve loginRequest parametreleini veriyoruz.
+			
+            //Authentication ile authenticate oluyoruz ve loginRequest parametreleini veriyoruz. 
 			Authentication authentication = authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 

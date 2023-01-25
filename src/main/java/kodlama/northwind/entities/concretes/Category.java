@@ -1,5 +1,6 @@
 package kodlama.northwind.entities.concretes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,9 @@ import lombok.Data;
 @Entity
 @Table(name= "categories")
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler","products"})
-public class Category 
+public class Category implements Serializable
 {
+	 private static final long serialVersionUID = -4439114469417994311L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="category_id")

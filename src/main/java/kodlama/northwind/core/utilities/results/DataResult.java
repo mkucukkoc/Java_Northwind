@@ -1,13 +1,16 @@
 package kodlama.northwind.core.utilities.results;
 
+import java.io.Serializable;
+
 //DataResult ile bi veri dönmemiz lazım ve bunun için generic yapıları kullanıyoruz.
 //T vererek ister bir Product classı veririz.
 //isterse int ,double vb.şeyler verebiliriz.
-public class DataResult<T> extends Result {
+public class DataResult<T> extends Result  {
 
 	//DataResult classı bizim için data dönüyor ve data nin yanında ise
 	//başarılı mı degil mi onu ve message da dönebiliyoruz.
 	
+	private static final long serialVersionUID = 1L;
 	//result sınıfını extends ettigimizde içinde olan constructorlardan birini 
 	//kullanmak zorundayız yoksa hata verir.
 	private T data;

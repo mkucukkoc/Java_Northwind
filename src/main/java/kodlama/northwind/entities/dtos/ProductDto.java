@@ -1,5 +1,7 @@
 package kodlama.northwind.entities.dtos;
 
+
+
 public class ProductDto {
 
 

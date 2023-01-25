@@ -8,7 +8,7 @@ import kodlama.northwind.entities.concretes.Category;
 
 public interface CategoryService {
 	DataResult<List<Category>> getAll();
-	DataResult<Category> getById(int id);
+	DataResult<Category> getById(int id) throws InterruptedException;
 	Result add(Category category);
 	Result remove(int id);
 }

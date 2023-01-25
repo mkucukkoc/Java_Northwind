@@ -1,11 +1,16 @@
 package kodlama.northwind.entities.concretes;
+import java.io.Serializable;
+
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name= "products")
+//@RedisHash("Product")
 public class Product 
 {
+	//private static final long serialVersionUID = 1L;
 	//@Data lombok kullanmamızı sağlıyor ve bu bixim için constructor oluşturuyor ve getter,setter ları oluşturuyor.
 	//@Entity veritabanına böyle bir tablo olacagını belirtiyoz.
 	//@Table(name="products") isminin ise products oldugunu beliritiyoruz.
@@ -35,6 +40,7 @@ public class Product
 	//category classında ki gibi liste dönmememizin sebebi ise 1 ürünün 1 kategorisi olacagi için bu yüzden sadece Category categoryId attribute kullanıyoruz.
 	//ve categoryId alanını @JoinColumn ile product classının içine ekliyoruz.
 
+	@JsonIgnore
 	@ManyToOne()
 	private Category category;
 

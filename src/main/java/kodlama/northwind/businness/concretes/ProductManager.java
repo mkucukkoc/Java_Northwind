@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class ProductManager implements ProductService {
 	
 
 	@Override
+	//@Cacheable(cacheNames="productGetAll")
 	public DataResult<List<ProductDto>> getAll() {
 		List<Product>products=_productDao.findAll();
 		List<ProductDto>dtos=products.stream().map(product->modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());

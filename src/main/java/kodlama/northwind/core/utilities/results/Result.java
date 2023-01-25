@@ -1,8 +1,13 @@
 package kodlama.northwind.core.utilities.results;
 
-public class Result 
+import java.io.Serializable;
+
+
+
+public class Result implements Serializable 
 {
 
+	private static final long serialVersionUID = 1L;
 	//Result api de gösterilen verinin düzgün gelip gelmediğini
 	//gelirse success=true message olarak ise controller da
 	//ne yazarsak onu yazacak ekranda

@@ -2,33 +2,29 @@ package kodlama.northwind.core.entities;
 
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import kodlama.northwind.entities.concretes.Logs;
+import kodlama.northwind.entities.concretes.Product;
 @Entity
 @Table(	name = "users", 
 		uniqueConstraints = { 
 			@UniqueConstraint(columnNames = "username"),
 			@UniqueConstraint(columnNames = "email") 
 		})
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler","logs"})
 public class User {
 	
 	@Id
@@ -53,6 +49,20 @@ public class User {
 				joinColumns = @JoinColumn(name = "user_id"), 
 				inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<>();
+
+	
+	@OneToMany(mappedBy="user")
+	private List<Logs> logs;
+	
+	
+
+	public List<Logs> getLogs() {
+		return logs;
+	}
+
+	public void setLogs(List<Logs> logs) {
+		this.logs = logs;
+	}
 
 	public User() {
 	}

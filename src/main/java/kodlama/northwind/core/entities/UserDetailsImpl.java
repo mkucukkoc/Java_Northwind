@@ -1,4 +1,4 @@
-package kodlama.northwind.businness.concretes;
+package kodlama.northwind.core.entities;
 
 import java.util.Collection;
 import java.util.List;
@@ -8,8 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import kodlama.northwind.core.entities.User;
 
 public class UserDetailsImpl implements UserDetails {
 

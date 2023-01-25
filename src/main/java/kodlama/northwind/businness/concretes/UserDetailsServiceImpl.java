@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import kodlama.northwind.core.dataAccess.UserDao;
 import kodlama.northwind.core.entities.User;
+import kodlama.northwind.core.entities.UserDetailsImpl;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	
-	  @Autowired
+	  @Autowired()
 	  UserDao userRepository;
 
 	  //UserDetailsServiceImpl bu sınıfa UserDetailsService interface implement ediyoruz.

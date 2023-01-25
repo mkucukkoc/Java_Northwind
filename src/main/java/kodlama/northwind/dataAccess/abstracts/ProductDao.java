@@ -8,6 +8,8 @@ import javax.persistence.ManyToOne;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.stereotype.Repository;
 
 import kodlama.northwind.entities.concretes.Category;
 import kodlama.northwind.entities.concretes.Product;
@@ -15,6 +17,7 @@ import kodlama.northwind.entities.dtos.ProductDto;
 import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
 
 //fn+f3 =go to definition mac için 
+
 public interface ProductDao extends JpaRepository<Product,Integer>
 {
 	//JpaRepository c# da ki BaseRepsoistory veritabnına yazılacak olan temel CRUD işlemleri vb. şeyler için yazmamıza gerek yok 

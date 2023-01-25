@@ -8,15 +8,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.*;
-import kodlama.northwind.businness.concretes.UserDetailsImpl;
+import kodlama.northwind.core.entities.UserDetailsImpl;
 
+//@Slf4j
 @Component
 public class JwtUtils 
 //JWT Nedir?
 //jwt server a giden isteklerin aynı kişiden gidip girmediğini kontrol etmek için kullanılır.
 
 {
-	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+	   //@Slf4j =>bu anatasyonu eger implement edersek aşagıda yazılan bu kodu yazmamzıza gerek kalmaz =>
+	  //	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+	
+	
+	
+	  //bu kodda loglama yapmak için LoggerFactory i çagırıyoruz ve bu bize Logger instance oluşturuyor.
+	  //ve biz de bu kodla JwtUtils classı için log veriyor ve bu class da yazılan loggerları logger degişkenine veriyoruz.
+	  private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
 	  //token içinde olan key i verdigimiz değişken ->private String jwtSecret;
 	  //${app.jwtSecret}"->bu value degerini application.properties dosayasından alıyoruz.
@@ -39,6 +47,8 @@ public class JwtUtils
 	  //Authentication sınıfı yardımıyla bu işlemi yapıyoruz.
 	  public String generateJwtToken(Authentication authentication) {
 
+		  logger.info("info generateJwtToken metotu çaliştirldi...");
+		  logger.debug("debug generateJwtToken metotu çaliştirldi...");
 	    UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
 	    //setSubject içine UserDetailsImpl class ının içindeki username alanını veriyoruz ve bu tokenin
 	    //payload ksımında sub:"mustafa" olarak gözükecektir.
@@ -70,6 +80,7 @@ public class JwtUtils
 	      Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
 	      return true;
 	    } catch (SignatureException e) {
+	    	//{}->logger.error içindeki parantez olmasının sebebi exception dan gelen mesajı direkt otomatik almasındandır.
 	      logger.error("Invalid JWT signature: {}", e.getMessage());
 	    } catch (MalformedJwtException e) {
 	      logger.error("Invalid JWT token: {}", e.getMessage());

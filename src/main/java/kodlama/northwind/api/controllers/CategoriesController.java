@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import kodlama.northwind.businness.abstracts.CategoryService;
+import kodlama.northwind.businness.concretes.CategoryManager;
 import kodlama.northwind.core.utilities.results.DataResult;
 import kodlama.northwind.core.utilities.results.Result;
 import kodlama.northwind.entities.concretes.Category;
@@ -19,6 +20,9 @@ import kodlama.northwind.entities.concretes.Category;
 @RequestMapping("/api/categories")
 public class CategoriesController {
 	
+	@Autowired
+	public CategoryManager categorManager;
+	private int sayac=0;
 	private CategoryService _categoryService;
 
 	@Autowired
@@ -41,16 +45,32 @@ public class CategoriesController {
 		
 	}
 	@GetMapping("/getById")
-	public DataResult<Category> getById(int id)
+	public DataResult<Category> getById(int id) throws InterruptedException
 	{
+		
 		return this._categoryService.getById(id);
 		
 	}
-	
+
 	@DeleteMapping("{id}")
 	public Result remove(int id)
 	{
 		return this._categoryService.remove(id);
 		
 	}
+	
+	@GetMapping
+	public String cacheControl() throws InterruptedException
+	{
+		if(sayac==5)
+		{
+			this.categorManager.clearCache();
+			sayac=0;
+		}
+		sayac++;
+		return this.categorManager.longRunninMethod();
+	}
+	
+	
+	
 }
