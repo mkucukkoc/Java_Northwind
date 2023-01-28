@@ -1,6 +1,6 @@
 package kodlama.northwind.core.utilities.results;
 
-import java.io.Serializable;
+
 
 //DataResult ile bi veri dönmemiz lazım ve bunun için generic yapıları kullanıyoruz.
 //T vererek ister bir Product classı veririz.
@@ -41,5 +41,8 @@ public class DataResult<T> extends Result  {
 	{
 		return this.data;
 	}
+	
+	
+	
 
 }

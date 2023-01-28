@@ -2,6 +2,7 @@ package kodlama.northwind.core.utilities.results;
 
 public class ErrorDataResult<T> extends DataResult<T> {
 
+
 	private static final long serialVersionUID = 1L;
 
 	//Error data result da aslında data dönmemiz lazım fakat dönmemizin sebebi

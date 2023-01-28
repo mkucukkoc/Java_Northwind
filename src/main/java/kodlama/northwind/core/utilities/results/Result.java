@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 
 
-public class Result implements Serializable 
+public class Result 
 {
 
 	private static final long serialVersionUID = 1L;
@@ -30,6 +30,7 @@ public class Result implements Serializable
 		this.message=message;
 	}
 	
+
 	public boolean isSuccess()
 	{
 		return this.success;

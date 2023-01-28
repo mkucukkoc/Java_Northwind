@@ -22,7 +22,7 @@ public class CategoriesController {
 	
 	@Autowired
 	public CategoryManager categorManager;
-	private int sayac=0;
+
 	private CategoryService _categoryService;
 
 	@Autowired
@@ -34,8 +34,10 @@ public class CategoriesController {
 	@GetMapping("/getall")
 	public DataResult<List<Category>> getAll()
 	{
-		return this._categoryService.getAll();//burada çalışan getall metodu ProductManaager in getall i çalışıyor.
 		
+			var list=this._categoryService.getAll();//burada çalışan getall metodu ProductManaager in getall i çalışıyor
+			
+			return list;
 	}
 	
 	@PostMapping("/add")
@@ -59,17 +61,7 @@ public class CategoriesController {
 		
 	}
 	
-	@GetMapping
-	public String cacheControl() throws InterruptedException
-	{
-		if(sayac==5)
-		{
-			this.categorManager.clearCache();
-			sayac=0;
-		}
-		sayac++;
-		return this.categorManager.longRunninMethod();
-	}
+	
 	
 	
 	

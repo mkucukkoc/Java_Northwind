@@ -16,7 +16,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import kodlama.northwind.entities.concretes.Logs;
 import kodlama.northwind.entities.concretes.Product;
 @Entity
 @Table(	name = "users", 
@@ -51,18 +50,6 @@ public class User {
 	private Set<Role> roles = new HashSet<>();
 
 	
-	@OneToMany(mappedBy="user")
-	private List<Logs> logs;
-	
-	
-
-	public List<Logs> getLogs() {
-		return logs;
-	}
-
-	public void setLogs(List<Logs> logs) {
-		this.logs = logs;
-	}
 
 	public User() {
 	}

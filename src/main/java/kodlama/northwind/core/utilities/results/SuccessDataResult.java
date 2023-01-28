@@ -3,6 +3,7 @@ package kodlama.northwind.core.utilities.results;
 
 public class SuccessDataResult<T> extends DataResult<T> 
 {
+	
 	private static final long serialVersionUID = 1L;
 	public SuccessDataResult(T data,String message)
 	{

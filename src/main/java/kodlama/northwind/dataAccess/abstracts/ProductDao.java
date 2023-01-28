@@ -1,6 +1,7 @@
 package kodlama.northwind.dataAccess.abstracts;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
+import kodlama.northwind.core.utilities.results.Result;
 import kodlama.northwind.entities.concretes.Category;
 import kodlama.northwind.entities.concretes.Product;
 import kodlama.northwind.entities.dtos.ProductDto;
@@ -29,9 +31,9 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	//getBy ile başlamamızın sebebi JPA repository inin bu isimlendirmeyi arka planda kullanmasıdır.
 	//yani sonuç olarak bizim için arka planda bir where koşulu oluşturmasını sağlıyor.
 	//yani JPA Kullanmak istiyorsak bu isimlendirme standartında uymamız lazım.
-	Product getByProductName(String prodcutName);
+	Optional<Product> getByProductName(String prodcutName);
+	Optional<Product>  deleteById(int id);
 	
-	ProductDto getByid(int id);
 	//getByProductNameAndCategoryId için JPA bizim için arka planda şu sorguyu yazıyor->
 	//select * from product where=ProductName=abc and CategoryId=1
 	//diger getBy ile başlayan alanalar içinde aynı şekilde onlar içinde sorgu oluşturuyor.
@@ -67,7 +69,10 @@ public interface ProductDao extends JpaRepository<Product,Integer>
 	@Query("Select new kodlama.northwind.entities.dtos.ProductDto(p.id,p.productName,p.quantityPerUnit,p.unitPrice,p.unitsInStock,p.categoryId) From Product p")
 	List<ProductDto> getAllProduct();
 	
+    List<Product> getByproductNameLike(String productName);
 
+
+	List<Product> getByProductNameLike(String productName);
 
 	
 	

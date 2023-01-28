@@ -2,32 +2,39 @@ package kodlama.northwind.entities.concretes;
 import java.io.Serializable;
 
 import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity
-@Table(name= "products")
-//@RedisHash("Product")
-public class Product 
-{
+
 	//private static final long serialVersionUID = 1L;
 	//@Data lombok kullanmamızı sağlıyor ve bu bixim için constructor oluşturuyor ve getter,setter ları oluşturuyor.
 	//@Entity veritabanına böyle bir tablo olacagını belirtiyoz.
 	//@Table(name="products") isminin ise products oldugunu beliritiyoruz.
 
+@Entity
+@Table(name= "products")
+public class Product 
+{
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name="product_id")
 	private int id;
 	
+	
+	
+
+
+
 	@Column(name="category_id")
 	private int categoryId;
+	
 	
 	@Column(name="product_name")
 	private String productName;
 	
+	
 	@Column(name="unit_price")
 	private double unitPrice;
+	
 	
 	@Column(name="units_in_stock")
 	private short unitsInStock;
@@ -93,15 +100,16 @@ public class Product
 		this.quantityPerUnit = quantityPerUnit;
 		this.category = category;
 	}
+	
+
 	public int getId() {
 		return id;
 	}
 
-
-
 	public void setId(int id) {
 		this.id = id;
 	}
+
 
 
 
@@ -150,6 +158,8 @@ public class Product
 	public void setQuantityPerUnit(String quantityPerUnit) {
 		this.quantityPerUnit = quantityPerUnit;
 	}
+
+	
 
 
 	

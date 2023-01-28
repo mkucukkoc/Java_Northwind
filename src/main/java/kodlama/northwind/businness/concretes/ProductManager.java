@@ -5,12 +5,16 @@ import java.util.stream.Collectors;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+
 import kodlama.northwind.businness.abstracts.ProductService;
+import kodlama.northwind.core.exceptions.ErrorNotFoundException;
 import kodlama.northwind.core.utilities.results.DataResult;
+import kodlama.northwind.core.utilities.results.ErrorDataResult;
+import kodlama.northwind.core.utilities.results.ErrorResult;
 import kodlama.northwind.core.utilities.results.Result;
 import kodlama.northwind.core.utilities.results.SuccessResult;
 import kodlama.northwind.core.utilities.results.SuccessDataResult;
@@ -18,9 +22,11 @@ import kodlama.northwind.dataAccess.abstracts.ProductDao;
 import kodlama.northwind.entities.concretes.Product;
 import kodlama.northwind.entities.dtos.ProductDto;
 import kodlama.northwind.entities.dtos.ProductWithCategoryDto;
+import kodlama.northwind.entities.dtos.UpdateProductDto;
+
 
 @Service
-public class ProductManager implements ProductService {
+public class ProductManager implements ProductService  {
 	//@Service annotaasyonu ProductManager e sen bir servis sınıfısın demektir.Bu şu anlama geliyor yani sen iş kodlarının yazılacagı yer diyoruz.
 
 	//ProductDao dataaccess layer da ki interface dir.
@@ -28,7 +34,7 @@ public class ProductManager implements ProductService {
 	@Autowired
 	private ModelMapper modelMapper;
 	
-	
+	@Autowired
 	private ProductDao _productDao;
 	
 	@Autowired
@@ -36,33 +42,92 @@ public class ProductManager implements ProductService {
 		super();
 		this._productDao = _productDao;
 	}
-
 	
 
 	@Override
+	 public List<Product> getByProductNameLike(String productName) 
+	{
+	        return _productDao.getByProductNameLike(productName);
+	}
+	
+	@Override
+	public Result updateProduct(UpdateProductDto productDto) {
+		//Optional Clas sayesinde;
+		//Null kontrolü yapılmasına gerek kalmaz.
+		//Kolay kod yazımı.
+		//Kod okunabilirliğinin kolaylaşması.
+		Optional<Product> getId = _productDao.findById(productDto.getProductId()); 
+		//isPresent : Bu method Optional türde olan bir nesnenin tanımlı olup olmadığını kontrol etmemizi sağlar.
+		//Eğer tanımlı ise true değil ise false değeri döner.
+		if(getId.isPresent())
+		{
+			getId.get().setProductName(productDto.getProductName());
+			getId.get().setQuantityPerUnit(productDto.getQuantityPerUnit());
+			getId.get().setUnitPrice(productDto.getUnitPrice());
+			getId.get().setUnitsInStock(productDto.getUnitsInStock());
+			getId.get().setCategoryId(productDto.getCategoryId());
+			modelMapper.map(_productDao.save(getId.get()), UpdateProductDto.class);
+			return new SuccessResult("Ürün Güncellendi");
+		}
+		throw new ErrorNotFoundException(productDto.getProductId()+ " Numaralı Product Bulunamadı için güncelleme yapılamadı");
+	}
+	@Override
+	public Result remove(int id) {
+		
+		Optional<Product>productId=_productDao.findById(id);
+		if(productId.isPresent())
+		{
+			_productDao.deleteById(id);
+			return new SuccessResult(id+" Numaralı Ürün silme işlemi gerçekleşti...");
+		}
+		throw  new ErrorNotFoundException(id+" Numaralı Ürün Bulunamadı ve silme işlemi yapilamadi...");
+
+	}
+	@Override
 	//@Cacheable(cacheNames="productGetAll")
 	public DataResult<List<ProductDto>> getAll() {
+		
 		List<Product>products=_productDao.findAll();
+		if (products.isEmpty()) {
+		      throw new ErrorNotFoundException("Data Bulunamadi");
+		    }
 		List<ProductDto>dtos=products.stream().map(product->modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
-		return  new SuccessDataResult<List<ProductDto>>(dtos,
+		return  new SuccessDataResult<List<ProductDto>>((dtos),
 		"Data Listelendi");//bu satır ile tüm productları alıyoruz.
 	}
 	
 	@Override
 	public Result add(ProductDto productDto) {
 		
-		Product products=modelMapper.map(productDto, Product.class);
-		modelMapper.map(_productDao.save(products), ProductDto.class);
-		return new SuccessResult("Ürün Eklendi");
-		
+		    Product products=modelMapper.map(productDto, Product.class);
+			modelMapper.map(_productDao.save(products), ProductDto.class);
+			return new SuccessResult(productDto.getProductName() +" Adlı Ürün Eklendi");
 	}
 
 	@Override
-	public DataResult<Product> getByProductName(String prodcutName) {
-		return  new SuccessDataResult<Product>
-		(this._productDao.getByProductName(prodcutName),"Data Listelendi");
+	public DataResult<ProductDto> getById(int id) {
+		Optional<Product> productDto = _productDao.findById(id);
+		//productDto.stream().filter(item->item.getId()==id).findAny();
+		if(productDto.isPresent())
+		{
+			return new SuccessDataResult<ProductDto>(modelMapper.map(productDto.get(),ProductDto.class),("Data Listelendi"));
+		}
+		 throw new ErrorNotFoundException("Aranan İd Bulunamadi");
 	}
-
+	
+	@Override
+	public DataResult<ProductDto> getByProductName(String productName) {
+		Optional<Product> productDto = _productDao.getByProductName(productName);
+		//productDto.stream().filter(item->item.getProductName().equals(productName));
+		if(productDto.isPresent())
+		{
+			return new SuccessDataResult<ProductDto>(modelMapper.map(productDto.get(),ProductDto.class),(productName+" Adli Product Name Listelendi"));
+		}
+		//return new ErrorDataResult<ProductDto>(null,productName+ " Adlı Product Name Bulunamadı");
+		
+		throw new ErrorNotFoundException(productName +" Aranan ProductName Bulunamadi");
+	}
+    /*
 	@Override
 	public DataResult<Product> getByProductNameAndCategoryId(String productName, int categoryId) {
 		return  new SuccessDataResult<Product>
@@ -119,53 +184,16 @@ public class ProductManager implements ProductService {
 		(this._productDao.getproductWithCategoryDetails(),"Data Listelendi");
 
 	}
-
 	
-	
-	public DataResult<ProductDto> getById(int id) {
-		
-		Optional<Product> productDto = _productDao.findById(id); 
-		
-		return new SuccessDataResult<ProductDto>(modelMapper.map(productDto.get(),ProductDto.class,("Data Listelendi")));
-		
-	}
-
-	@Override
-	public Result remove(int id) {
-		this._productDao.deleteById(id);
-		return new SuccessResult("Ürün Silindi");
-	}
-
 	@Override
 	public DataResult<List<ProductDto>> getAllProduct() {
 		return  new SuccessDataResult<List<ProductDto>>
 		(this._productDao.getAllProduct(),"Data Listelendi");//bu satır ile tüm productları alıyoruz.
-	}
+	}*/
 
-
-
-	@Override
-	public Result updateProduct(int id, ProductDto productDto) {
-		//Optional Clas sayesinde;
-		//Null kontrolü yapılmasına gerek kalmaz.
-		//Kolay kod yazımı.
-		//Kod okunabilirliğinin kolaylaşması.
-		Optional<Product> getId = _productDao.findById(id); 
-		//isPresent : Bu method Optional türde olan bir nesnenin tanımlı olup olmadığını kontrol etmemizi sağlar.
-		//Eğer tanımlı ise true değil ise false değeri döner.
-		if(getId.isPresent())
-		{
-			getId.get().setProductName(productDto.getProductName());
-			getId.get().setQuantityPerUnit(productDto.getQuantityPerUnit());
-			getId.get().setUnitPrice(productDto.getUnitPrice());
-			getId.get().setUnitsInStock(productDto.getUnitsInStock());
-			getId.get().setCategoryId(productDto.getCategoryId());	
-		}
-		modelMapper.map(_productDao.save(getId.get()), ProductDto.class);
-		return new SuccessResult("Ürün Güncellendi");
-
-	}
-	
 	
 
+	
+
+	
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="trace">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MMM-dd hh:mm:ss a} %level %c - %m %n" />
+        </Console>
+        <JDBC name="databaseAppender" tableName="norths.logs">
+            <ConnectionFactory class="kodlama.northwind.security.configs.ConnectionFactory" method="getDatabaseConnection" />
+            <Column name="id" pattern="%u" />
+            <Column name="date_time" isEventTimestamp="true" />
+            <Column name="class_info" pattern="%logger" />
+            <Column name="level" pattern="%level" />
+            <Column name="message" pattern="%message" isClob="true" />
+            <Column name="exception_info" pattern="%ex{full}" isClob="true" />
+        </JDBC>
+    </Appenders>
+    <Loggers>
+        <Logger name="kodlama.northwind" level="debug">
+            <AppenderRef ref="Console" />
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="databaseAppender" />
+        </Root>
+    </Loggers>
+</Configuration>
