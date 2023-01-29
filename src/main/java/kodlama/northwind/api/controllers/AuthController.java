@@ -76,7 +76,12 @@ public class AuthController {
 					.map(item -> item.getAuthority())
 					.collect(Collectors.toList());
 
-			return ResponseEntity.ok(new JwtResponse(jwt));
+			return ResponseEntity.ok(new JwtResponse(
+														 jwt, 
+														 userDetails.getId(), 
+														 userDetails.getUsername(), 
+														 userDetails.getEmail(), 
+														 roles));
 		}
 
 		@PostMapping("/register")
@@ -110,7 +115,7 @@ public class AuthController {
 					switch (role) {
 					case "admin":
 						Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-								.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+						.orElseThrow(() -> new RuntimeException("Error: Role is not found."));
 						roles.add(adminRole);
 
 						break;

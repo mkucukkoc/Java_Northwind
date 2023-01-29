@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +30,6 @@ import kodlama.northwind.entities.dtos.ProductDto;
 import kodlama.northwind.entities.dtos.UpdateProductDto;
 
 import org.springframework.http.HttpStatus;
-
 
 @RestController
 @RequestMapping("/api/products")
@@ -55,10 +55,10 @@ public class ProductsController  {
 	}
 
 	@GetMapping("/getall")
-	public ResponseEntity<DataResult<List<ProductDto>>> getAll()
+	public DataResult<List<ProductDto>> getAll()
 	{
 		logger.info("***********getAll productController action called..");
-		return ResponseEntity.ok(this.productService.getAll());//burada çalışan getall metodu ProductManaager in getall i çalışıyor.
+		return this.productService.getAll();//burada çalışan getall metodu ProductManaager in getall i çalışıyor.
 	}
 	
 	 
@@ -87,18 +87,16 @@ public class ProductsController  {
 	@GetMapping("/getById")
 	public DataResult<ProductDto> getById(int id)
 	{
-		logger.info("***********getById productController action called..");
 
 		return this.productService.getById(id);
 
 	}
 	
 	@DeleteMapping("{id}")
-	public ResponseEntity<?> remove(int id)
+	public Result remove(int id)
 	{
-		logger.info("***********remove productController action called..");
 
-		return ResponseEntity.ok(productService.remove(id));
+		return productService.remove(id);
 		
 	}
 	
@@ -108,7 +106,7 @@ public class ProductsController  {
 	{
 		logger.info("***********add productController action called..");
 
-		return ResponseEntity.ok(this.productService.add(productDto));
+		return new ResponseEntity<>(this.productService.add(productDto),HttpStatus.CREATED);
 		
 	}
 	
@@ -116,9 +114,9 @@ public class ProductsController  {
 	//yani swagger da degerleri girmek için text ler oluştururuyo.
 	
 	@PostMapping("/update")
-	public ResponseEntity<?> update(@Valid @RequestBody UpdateProductDto updateProductDto)
+	public Result update(@Valid @RequestBody UpdateProductDto updateProductDto)
 	{
-		return ResponseEntity.ok(this.productService.updateProduct(updateProductDto));
+		return this.productService.updateProduct(updateProductDto);
 		
 	}
 	

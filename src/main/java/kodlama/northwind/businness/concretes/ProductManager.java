@@ -67,30 +67,28 @@ public class ProductManager implements ProductService  {
 			getId.get().setUnitsInStock(productDto.getUnitsInStock());
 			getId.get().setCategoryId(productDto.getCategoryId());
 			modelMapper.map(_productDao.save(getId.get()), UpdateProductDto.class);
-			return new SuccessResult("Ürün Güncellendi");
+			return new SuccessResult(getId+" Numarali Ürün Güncellendi");
 		}
 		throw new ErrorNotFoundException(productDto.getProductId()+ " Numaralı Product Bulunamadı için güncelleme yapılamadı");
 	}
 	@Override
 	public Result remove(int id) {
 		
-		Optional<Product>productId=_productDao.findById(id);
-		if(productId.isPresent())
+		  Optional<Product> productDto=_productDao.findById(id);
+		
+		if(productDto.isPresent())
 		{
 			_productDao.deleteById(id);
 			return new SuccessResult(id+" Numaralı Ürün silme işlemi gerçekleşti...");
 		}
-		throw  new ErrorNotFoundException(id+" Numaralı Ürün Bulunamadı ve silme işlemi yapilamadi...");
-
+		  
+		throw new ErrorNotFoundException(id +" Numaralı İd Bulunamadi");
 	}
 	@Override
 	//@Cacheable(cacheNames="productGetAll")
 	public DataResult<List<ProductDto>> getAll() {
 		
 		List<Product>products=_productDao.findAll();
-		if (products.isEmpty()) {
-		      throw new ErrorNotFoundException("Data Bulunamadi");
-		    }
 		List<ProductDto>dtos=products.stream().map(product->modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
 		return  new SuccessDataResult<List<ProductDto>>((dtos),
 		"Data Listelendi");//bu satır ile tüm productları alıyoruz.
@@ -112,7 +110,7 @@ public class ProductManager implements ProductService  {
 		{
 			return new SuccessDataResult<ProductDto>(modelMapper.map(productDto.get(),ProductDto.class),("Data Listelendi"));
 		}
-		 throw new ErrorNotFoundException("Aranan İd Bulunamadi");
+		throw new ErrorNotFoundException("Aranan İd Bulunamadi");
 	}
 	
 	@Override
